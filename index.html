@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>visualdocx | Professional Web Editing</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">visual<span>docx</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content reveal">
+            <h1>Expert Web <span>Refinement</span>.</h1>
+            <p>From quick text fixes to full SEO overhauls. Your site, perfected.</p>
+            <a href="#services" class="cta-button">View Pricing</a>
+        </div>
+    </header>
+
+    <section id="services" class="rates">
+        <h2 class="reveal">Service Tiers</h2>
+        <div class="rates-grid">
+            <!-- Basic -->
+            <div class="rate-card reveal">
+                <div class="dot green"></div>
+                <h3>Basic Editing</h3>
+                <p class="desc">Text & Image updates</p>
+                <p class="price">$5 – $20</p>
+            </div>
+            <!-- Small -->
+            <div class="rate-card reveal">
+                <div class="dot yellow"></div>
+                <h3>Small Task</h3>
+                <p class="desc">Section add/remove</p>
+                <p class="price">$20 – $100</p>
+            </div>
+            <!-- Medium -->
+            <div class="rate-card reveal">
+                <div class="dot orange"></div>
+                <h3>Medium Work</h3>
+                <p class="desc">Design & Layout changes</p>
+                <p class="price">$100 – $300</p>
+            </div>
+            <!-- Advanced -->
+            <div class="rate-card reveal highlighted">
+                <div class="dot blue"></div>
+                <h3>Advanced</h3>
+                <p class="desc">Full Redesign + SEO</p>
+                <p class="price">$300 – $2000+</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact reveal">
+        <h2>Get in Touch</h2>
+        <p>Ready to upgrade? Fill out the form below.</p>
+        <form class="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <select>
+                <option>Select Service</option>
+                <option>Basic Editing</option>
+                <option>Small Task</option>
+                <option>Medium Work</option>
+                <option>Advanced Work</option>
+            </select>
+            <textarea placeholder="Describe your project..." rows="5"></textarea>
+            <button type="submit" class="submit-btn">Send Proposal</button>
+        </form>
+    </section>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
