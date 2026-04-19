@@ -3,536 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>visualdocx — Motion & Web Editing</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <title>visualdocx | Motion & Web Editing</title>
 
-    :root {
-      --bg: #080a0e;
-      --surface: #0e1117;
-      --border: rgba(255,255,255,0.07);
-      --accent: #2563eb;
-      --accent-glow: rgba(37,99,235,0.35);
-      --green: #22c55e;
-      --yellow: #eab308;
-      --orange: #f97316;
-      --blue: #60a5fa;
-      --text: #e8eaf0;
-      --muted: #6b7280;
-      --font-display: 'Bebas Neue', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-    }
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  
+  <!-- Font Stylesheets: Bebas Neue and Syne -->
+  <link href="https://googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-weight: 300;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      background-size: 200px;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.5;
-    }
-
-    /* ── NAVBAR ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 5vw;
-      background: rgba(8,10,14,0.75);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      letter-spacing: 0.06em;
-      color: var(--text);
-    }
-    .logo span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 0 5vw;
-      overflow: hidden;
-    }
-
-    /* large blurred orb */
-    .hero::after {
-      content: '';
-      position: absolute;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%);
-      top: 50%; left: 60%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      animation: pulse 6s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-      50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.7; }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 720px;
-    }
-
-    .hero-eyebrow {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid rgba(37,99,235,0.4);
-      padding: 0.3rem 0.8rem;
-      border-radius: 100px;
-      margin-bottom: 1.8rem;
-      animation: fadeUp 0.7s ease both;
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(4rem, 10vw, 8rem);
-      line-height: 0.93;
-      letter-spacing: 0.02em;
-      color: var(--text);
-      animation: fadeUp 0.7s 0.15s ease both;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: var(--accent);
-      -webkit-text-stroke: 0px;
-    }
-
-    .hero-sub {
-      margin-top: 1.6rem;
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 480px;
-      animation: fadeUp 0.7s 0.3s ease both;
-    }
-
-    .hero-actions {
-      margin-top: 2.4rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      animation: fadeUp 0.7s 0.45s ease both;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: 0.9rem;
-      padding: 0.8rem 1.8rem;
-      border-radius: 8px;
-      text-decoration: none;
-      letter-spacing: 0.03em;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 0 0 var(--accent-glow);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px var(--accent-glow);
-    }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      padding: 0.8rem 1.6rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-
-    /* scroll indicator */
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 5vw;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      z-index: 2;
-      animation: fadeUp 0.7s 0.7s ease both;
-    }
-    .scroll-line {
-      width: 40px; height: 1px;
-      background: linear-gradient(to right, var(--accent), transparent);
-    }
-
-    /* ── SECTION SHARED ── */
-    section { position: relative; z-index: 1; }
-
-    .section-label {
-      display: inline-block;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.8rem;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      letter-spacing: 0.03em;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    /* ── PRICING ── */
-    .pricing {
-      padding: 8rem 5vw;
-    }
-
-    .pricing-header {
-      max-width: 520px;
-      margin-bottom: 4rem;
-    }
-
-    .pricing-header p {
-      color: var(--muted);
-      margin-top: 0.8rem;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem 1.8rem 2.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.25s, border-color 0.25s;
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.25s;
-    }
-    .card.visible { opacity: 1; transform: translateY(0); }
-    .card:nth-child(2) { transition-delay: 0.1s; }
-    .card:nth-child(3) { transition-delay: 0.2s; }
-    .card:nth-child(4) { transition-delay: 0.3s; }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at top left, var(--glow, transparent) 0%, transparent 65%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .card:hover::before { opacity: 1; }
-    .card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.14); }
-
-    .card.featured {
-      border-color: var(--accent);
-      background: linear-gradient(145deg, #0d1726 0%, #0e1117 100%);
-    }
-    .card.featured .card-badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-    }
-    .card-badge { display: none; }
-
-    .card-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      margin-bottom: 0.4rem;
-    }
-    .card-dot.green { background: var(--green); --glow: rgba(34,197,94,0.12); }
-    .card-dot.yellow { background: var(--yellow); --glow: rgba(234,179,8,0.12); }
-    .card-dot.orange { background: var(--orange); --glow: rgba(249,115,22,0.12); }
-    .card-dot.blue { background: var(--blue); --glow: rgba(96,165,250,0.12); }
-
-    /* Inherit glow variable via parent */
-    .card:has(.green)::before { --glow: rgba(34,197,94,0.12); }
-    .card:has(.yellow)::before { --glow: rgba(234,179,8,0.12); }
-    .card:has(.orange)::before { --glow: rgba(249,115,22,0.12); }
-    .card:has(.blue)::before { --glow: rgba(96,165,250,0.18); }
-
-    .card h3 {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      letter-spacing: 0.04em;
-    }
-
-    .card .desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      flex: 1;
-    }
-
-    .card .price {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      letter-spacing: 0.03em;
-      color: var(--text);
-      margin-top: 0.4rem;
-    }
-
-    .card-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      margin-top: 0.5rem;
-    }
-    .card-cta:hover { color: var(--text); }
-    .card-cta svg { transition: transform 0.2s; }
-    .card-cta:hover svg { transform: translateX(3px); }
-
-    /* ── DIVIDER ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--border), transparent);
-      margin: 0 5vw;
-    }
-
-    /* ── CONTACT ── */
-    .contact {
-      padding: 8rem 5vw;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-
-    @media (max-width: 768px) {
-      .contact { grid-template-columns: 1fr; gap: 3rem; }
-    }
-
-    .contact-left { }
-
-    .contact-info {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .contact-chip {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-    }
-    .contact-chip .icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-    .contact-chip .icon.email-icon { background: rgba(37,99,235,0.15); }
-    .contact-chip .icon.wa-icon { background: rgba(37,211,102,0.15); }
-
-    .contact-chip .label {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .contact-chip .value {
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: var(--text);
-    }
-
-    .wa-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-top: 1.5rem;
-      background: #25D366;
-      color: #fff;
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: 0.9rem;
-      padding: 0.75rem 1.6rem;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .wa-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(37,211,102,0.3);
-    }
-
-    /* ── FORM ── */
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-
-    .contact-form input,
-    .contact-form select,
-    .contact-form textarea {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 300;
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
-      outline: none;
-      width: 100%;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      -webkit-appearance: none;
-    }
-    .contact-form input::placeholder,
-    .contact-form textarea::placeholder { color: var(--muted); }
-    .contact-form input:focus,
-    .contact-form select:focus,
-    .contact-form textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
-    }
-    .contact-form select option { background: #0e1117; }
-    .contact-form textarea { resize: vertical; min-height: 130px; }
-
-    .submit-btn {
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size: 0.9rem;
-      letter-spacing: 0.04em;
-      padding: 0.9rem 1.8rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      align-self: flex-start;
-    }
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px var(--accent-glow);
-    }
-    .submit-btn:active { transform: translateY(0); }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 5vw;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    footer .logo { font-size: 1.2rem; }
-    footer p { font-size: 0.78rem; color: var(--muted); }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      .hero h1 { font-size: 3.5rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="logo">visual<span>docx</span></div>
+  <!-- Animated grid -->
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <!-- ── NAV ── -->
+  <nav class="navbar" id="navbar">
+    <a href="#home" class="logo">visual<span>docx</span></a>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#pricing">Pricing</a></li>
@@ -540,118 +29,226 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
+  <!-- ── HERO ── -->
   <header class="hero" id="home">
+    <!-- Orbs -->
+    <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+
+    <!-- Particles -->
+    <div class="particles" id="particles" aria-hidden="true"></div>
+
     <div class="hero-content">
-      <span class="hero-eyebrow">Motion & Web Editing</span>
-      <h1>Expert <em>Visual</em><br>Refinement.</h1>
-      <p class="hero-sub">From quick text fixes to full motion graphic productions. Your vision, elevated.</p>
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        Motion &amp; Web Editing Studio
+      </div>
+      <h1>
+        Expert<br>
+        <span class="gradient-text" data-text="Visual">Visual</span><br>
+        Refinement.
+      </h1>
+      <p>From quick text fixes to cinematic motion productions.<br>Your vision, elevated frame by frame.</p>
       <div class="hero-actions">
-        <a href="#pricing" class="btn-primary">
-          View Pricing
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#contact" class="btn-ghost">Start a project</a>
+        <a href="#pricing" class="cta-button">View Pricing →</a>
+        <a href="#contact" class="cta-ghost">Start a Project</a>
       </div>
     </div>
-    <div class="scroll-hint">
-      <span class="scroll-line"></span>
-      Scroll
+
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-arrow"></div>
+      <span>Scroll</span>
     </div>
   </header>
 
-  <!-- PRICING -->
-  <section id="pricing" class="pricing">
-    <div class="pricing-header reveal">
-      <span class="section-label">What we offer</span>
+  <!-- ── STATS ── -->
+  <div class="stats reveal">
+    <div class="stat-item">
+      <div class="stat-num">50<span>+</span></div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4<span>★</span></div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">48<span>h</span></div>
+      <div class="stat-label">Avg. Turnaround</div>
+    </div>
+  </div>
+
+  <!-- ── PRICING ── -->
+  <section id="pricing" class="rates">
+    <div class="rates-header reveal">
+      <span class="section-eyebrow">What we offer</span>
       <h2 class="section-title">Service Tiers</h2>
-      <p>Transparent, flat-rate pricing for every scale of project.</p>
+      <p class="section-sub">Transparent flat-rate pricing for every scale of creative project.</p>
     </div>
 
-    <div class="cards-grid">
-
-      <div class="card">
-        <div class="card-dot green"></div>
+    <div class="rates-grid">
+      <div class="rate-card reveal reveal-delay-1">
+        <div class="dot green"></div>
         <h3>Basic Editing</h3>
-        <p class="desc">Simple reel cuts, color grading, and quick turnarounds for everyday content.</p>
+        <p class="desc">Simple reel cuts, color grading, and quick turnarounds for everyday social content.</p>
+        <p class="price-label">Starting from</p>
         <p class="price">$5 – $20</p>
-        <a href="#contact" class="card-cta">
-          Get started
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <a href="#contact" class="card-link">Get started →</a>
       </div>
 
-      <div class="card">
-        <div class="card-dot yellow"></div>
+      <div class="rate-card reveal reveal-delay-2">
+        <div class="dot yellow"></div>
         <h3>Small Task</h3>
-        <p class="desc">Basic motion graphics, lower thirds, and intro/outro animations.</p>
+        <p class="desc">Basic motion graphics, lower thirds, logo stings, and intro/outro animations.</p>
+        <p class="price-label">Starting from</p>
         <p class="price">$20 – $100</p>
-        <a href="#contact" class="card-cta">
-          Get started
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <a href="#contact" class="card-link">Get started →</a>
       </div>
 
-      <div class="card">
-        <div class="card-dot orange"></div>
+      <div class="rate-card reveal reveal-delay-3">
+        <div class="dot orange"></div>
         <h3>Medium Work</h3>
-        <p class="desc">Medium-complexity motion graphics, brand animations, and explainer segments.</p>
+        <p class="desc">Branded motion sequences, explainer animations, and multi-scene compositions.</p>
+        <p class="price-label">Starting from</p>
         <p class="price">$100 – $300</p>
-        <a href="#contact" class="card-cta">
-          Get started
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <a href="#contact" class="card-link">Get started →</a>
       </div>
 
-      <div class="card featured">
-        <div class="card-dot blue"></div>
-        <span class="card-badge">Most Complex</span>
+      <div class="rate-card highlighted reveal reveal-delay-4">
+        <div class="dot blue"></div>
+        <span class="tier-badge">Most Complex</span>
         <h3>Advanced</h3>
-        <p class="desc">Full advanced motion graphic productions, cinematic sequences, and custom 3D assets.</p>
+        <p class="desc">Full cinematic motion productions, custom 3D assets, and long-form edits.</p>
+        <p class="price-label">Starting from</p>
         <p class="price">$300 – $500+</p>
-        <a href="#contact" class="card-cta" style="color: var(--blue);">
-          Get started
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <a href="#contact" class="card-link">Get started →</a>
       </div>
-
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- CONTACT -->
+  <!-- ── CONTACT ── -->
   <section id="contact" class="contact">
     <div class="contact-left reveal">
-      <span class="section-label">Reach out</span>
+      <span class="section-eyebrow">Reach out</span>
       <h2 class="section-title">Let's Build<br>Something.</h2>
-      <div class="contact-info">
+      <p>Ready to upgrade your content? Fill out the form or reach out directly — we respond within 24 hours.</p>
+
+      <div class="contact-chips">
         <div class="contact-chip">
-          <div class="icon email-icon">📧</div>
+          <div class="chip-icon blue-bg">📧</div>
           <div>
-            <div class="label">Email</div>
-            <div class="value">visualdocx1@gmail.com</div>
+            <div class="chip-label">Email</div>
+            <div class="chip-val">visualdocx1@gmail.com</div>
           </div>
         </div>
         <div class="contact-chip">
-          <div class="icon wa-icon">📱</div>
+          <div class="chip-icon green-bg">📱</div>
           <div>
-            <div class="label">WhatsApp</div>
-            <div class="value">+91 9907541731</div>
+            <div class="chip-label">WhatsApp</div>
+            <div class="chip-val">+91 9907541731</div>
           </div>
         </div>
       </div>
-      <a href="https://wa.me/919907541731" target="_blank" class="wa-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+
+      <a href="https://wa.me" target="_blank" class="wa-cta">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
         Chat on WhatsApp
       </a>
     </div>
 
-    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Email Address" required />
+    <form class="contact-form reveal reveal-delay-2" id="contactForm">
+      <div class="form-row">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Email Address" required />
+      </div>
       <select>
         <option value="" disabled selected>Select a Service</option>
         <option>Basic Editing — $5–$20</option>
         <option>Small Task — $20–$100</option>
-        <option>Medium Work —
+        <option>Medium Work — $100–$300</option>
+        <option>Advanced Work — $300–$500+</option>
+      </select>
+      <textarea placeholder="Describe your project…" rows="5"></textarea>
+      <button type="submit" class="submit-btn" id="submitBtn">Send Proposal →</button>
+    </form>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <a href="#home" class="logo">visual<span>docx</span></a>
+    <p>© 2025 visualdocx. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ── Scroll reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('active');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.10 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ── Navbar shrink on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── Generate particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        top: ${40 + Math.random() * 50}%;
+        --dur: ${4 + Math.random() * 6}s;
+        --delay: ${Math.random() * 8}s;
+        width: ${1 + Math.random() * 2}px;
+        height: ${1 + Math.random() * 2}px;
+        opacity: 0;
+      `;
+      container.appendChild(p);
+    }
+
+    // ── Form submit
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Sent ✓';
+      btn.classList.add('success');
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = 'Send Proposal →';
+        btn.classList.remove('success');
+        btn.disabled = false;
+        this.reset();
+      }, 3200);
+    });
+
+    // ── Subtle card mouse-tracking tilt
+    document.querySelectorAll('.rate-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `translateY(-8px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), border-color 0.35s ease, box-shadow 0.35s ease';
+      });
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'transform 0.1s ease, border-color 0.35s ease, box-shadow 0.35s ease';
+      });
+    });
+  </script>
+
+</body>
+        </html>
+        
